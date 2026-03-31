@@ -49,8 +49,12 @@ mobileMenu.querySelectorAll('a').forEach(link => {
   const container = document.getElementById('orbs-container');
   if (!container) return;
 
+  // Respect reduced motion preference
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const isSmallMobile = window.matchMedia('(max-width: 480px)').matches;
   const isMobile = window.matchMedia('(max-width: 768px)').matches;
-  const orbCount = isMobile ? 6 : 12;
+  const orbCount = isSmallMobile ? 4 : isMobile ? 6 : 12;
 
   const colors = [
     'rgba(41, 151, 255,',   // blue
@@ -74,9 +78,9 @@ mobileMenu.querySelectorAll('a').forEach(link => {
     orb.classList.add('glass-orb');
 
     const color = colors[i % colors.length];
-    const size = isMobile ? rand(120, 280) : rand(180, 500);
-    const opacity = rand(0.03, 0.07);
-    const blur = rand(40, 90);
+    const size = isSmallMobile ? rand(80, 180) : isMobile ? rand(120, 280) : rand(180, 500);
+    const opacity = isMobile ? rand(0.03, 0.05) : rand(0.03, 0.07);
+    const blur = isMobile ? rand(30, 60) : rand(40, 90);
     const duration = rand(18, 35);
     const delay = rand(0, -15); // negative for staggered start
 

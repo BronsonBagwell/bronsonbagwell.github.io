@@ -59,7 +59,7 @@ ul { list-style: none; }
 .container {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 0 32px;
+  padding: 0 max(32px, env(safe-area-inset-left)) 0 max(32px, env(safe-area-inset-right));
 }
 
 /* ========================================
@@ -905,6 +905,17 @@ ul { list-style: none; }
 /* ========================================
    Responsive
    ======================================== */
+/* ========================================
+   Tablet (≤1024px)
+   ======================================== */
+@media (max-width: 1024px) {
+  .projects-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .skills-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+}
+
+/* ========================================
+   Mobile (≤768px)
+   ======================================== */
 @media (max-width: 768px) {
   .container { padding: 0 20px; }
   .nav-inner { padding: 0 20px; }
@@ -912,25 +923,118 @@ ul { list-style: none; }
   .nav-toggle { display: flex; }
   .mobile-menu { display: flex; }
 
-  .hero { padding: 120px 0 80px; min-height: auto; }
-  .hero-name { font-size: clamp(2.5rem, 12vw, 4rem); }
-  .hero-glow--primary { width: 600px; height: 400px; }
-  .hero-glow--secondary { width: 400px; height: 300px; }
+  .hero { padding: 120px 0 80px; min-height: 100svh; }
+  .hero-name { font-size: clamp(2.75rem, 13vw, 4.5rem); }
+  .hero-tagline { font-size: 1.0625rem; }
+  .hero-glow--primary { width: 500px; height: 350px; left: 30%; opacity: 0.7; }
+  .hero-glow--secondary { width: 350px; height: 250px; left: 55%; opacity: 0.5; }
 
-  .section { padding: 80px 0; }
-  .section-title { margin-bottom: 36px; }
+  .section { padding: 72px 0; }
+  .section-title { margin-bottom: 32px; font-size: 1.75rem; }
 
+  .glass-card { padding: 24px; border-radius: 16px; }
   .card-header { flex-direction: column; gap: 8px; }
-  .card-meta { align-items: flex-start; }
+  .card-meta { align-items: flex-start; flex-direction: row; gap: 8px; }
+  .card-role { font-size: 1.0625rem; }
+  .card-bullets li { font-size: 0.875rem; line-height: 1.6; }
 
-  .edu-grid { grid-template-columns: 1fr; }
-  .skills-grid { grid-template-columns: 1fr; }
-  .projects-grid { grid-template-columns: 1fr; }
+  .edu-grid { grid-template-columns: 1fr; gap: 16px; }
+  .edu-degree { font-size: 1rem; }
+  .edu-details { gap: 8px; }
 
-  .hero-links { flex-wrap: wrap; }
+  .certs-row { gap: 8px; }
+  .cert-pill { padding: 6px 14px; font-size: 0.75rem; }
 
+  .skills-grid { grid-template-columns: 1fr; gap: 16px; }
+  .skill-card { gap: 12px; }
+
+  .projects-grid { grid-template-columns: 1fr; gap: 16px; }
+  .project-card { padding: 24px; }
+  .project-arrow { top: 24px; right: 24px; opacity: 0.5; }
+
+  .hero-links { flex-wrap: wrap; gap: 10px; }
+  .hero-link { padding: 10px 16px; font-size: 0.8125rem; }
+
+  .section-divider::before { height: 48px; margin-top: -24px; }
+
+  .footer { padding: 48px 0 32px; }
   .footer-top { flex-direction: column; gap: 24px; }
   .footer-bottom { flex-direction: column; gap: 8px; align-items: flex-start; }
+  .footer-links { gap: 20px; }
 
-  /* Smaller/fewer orbs on mobile handled by JS */
+  /* Reduce ambient effects for performance */
+  .mesh-gradient { animation-duration: 40s; }
+  .noise-overlay { display: none; }
+}
+
+/* ========================================
+   Small Mobile (≤480px)
+   ======================================== */
+@media (max-width: 480px) {
+  .container { padding: 0 16px; }
+  .nav-inner { padding: 0 16px; }
+
+  .hero { padding: 100px 0 60px; }
+  .hero-name { font-size: clamp(2.25rem, 14vw, 3.5rem); }
+  .hero-badge { font-size: 0.75rem; padding: 5px 12px; margin-bottom: 20px; }
+  .hero-tagline { font-size: 1rem; margin-bottom: 16px; }
+  .hero-meta { margin-bottom: 36px; }
+  .hero-links { flex-direction: column; width: 100%; }
+  .hero-link { justify-content: center; width: 100%; }
+
+  .glass-card { padding: 20px; }
+  .card-meta { flex-direction: column; gap: 2px; }
+
+  .section { padding: 56px 0; }
+
+  .project-title { font-size: 1rem; padding-right: 36px; }
+  .project-desc { font-size: 0.8125rem; }
+
+  .mobile-menu a { font-size: 1.25rem; }
+
+  .hero-glow--primary { width: 350px; height: 250px; }
+  .hero-glow--secondary { display: none; }
+}
+
+/* ========================================
+   Touch device optimizations
+   ======================================== */
+@media (hover: none) {
+  .glass-card:hover {
+    transform: none;
+    box-shadow: var(--shadow-card);
+    background: var(--glass);
+    border-color: var(--glass-border);
+  }
+  .glass-card:active {
+    transform: scale(0.99);
+    background: var(--glass-hover);
+    transition-duration: 0.1s;
+  }
+  .glass-card::after { display: none; }
+  .project-arrow { opacity: 0.5; }
+  .project-card:hover .project-arrow { transform: none; }
+  .hero-link:hover { transform: none; }
+  .hero-link:active { transform: scale(0.97); transition-duration: 0.1s; }
+}
+
+/* ========================================
+   Reduced motion preference
+   ======================================== */
+@media (prefers-reduced-motion: reduce) {
+  .reveal { transition: opacity 0.3s ease; transform: none; }
+  .mesh-gradient { animation: none; }
+  .glass-orb { animation: none; }
+  .hero-glow--primary, .hero-glow--secondary { animation: none; }
+  .hero-name { animation: none; }
+  html { scroll-behavior: auto; }
+}
+
+/* ========================================
+   Large Desktop (≥1440px)
+   ======================================== */
+@media (min-width: 1440px) {
+  :root { --max-width: 1200px; }
+  .hero-name { font-size: 7.5rem; }
+  .section { padding: 140px 0; }
 }
