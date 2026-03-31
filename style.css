@@ -3,7 +3,7 @@
    ======================================== */
 :root {
   --bg: #000000;
-  --bg-alt: #0a0a0a;
+  --bg-alt: #050508;
   --surface: rgba(255, 255, 255, 0.04);
   --surface-hover: rgba(255, 255, 255, 0.07);
   --glass: rgba(255, 255, 255, 0.05);
@@ -50,6 +50,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  position: relative;
 }
 
 a { text-decoration: none; color: inherit; }
@@ -62,23 +63,147 @@ ul { list-style: none; }
 }
 
 /* ========================================
+   Ambient Background — Mesh Gradient
+   ======================================== */
+.ambient-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.mesh-gradient {
+  position: absolute;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  background:
+    radial-gradient(ellipse 600px 400px at 20% 30%, rgba(41, 151, 255, 0.04) 0%, transparent 70%),
+    radial-gradient(ellipse 500px 500px at 80% 20%, rgba(168, 85, 247, 0.035) 0%, transparent 70%),
+    radial-gradient(ellipse 700px 300px at 60% 70%, rgba(48, 213, 200, 0.03) 0%, transparent 70%),
+    radial-gradient(ellipse 400px 600px at 10% 80%, rgba(168, 85, 247, 0.025) 0%, transparent 70%),
+    radial-gradient(ellipse 500px 400px at 90% 60%, rgba(41, 151, 255, 0.03) 0%, transparent 70%);
+  animation: meshDrift 25s ease-in-out infinite alternate;
+}
+
+@keyframes meshDrift {
+  0% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(-3%, 2%) scale(1.02); }
+  66% { transform: translate(2%, -2%) scale(0.98); }
+  100% { transform: translate(-1%, 1%) scale(1.01); }
+}
+
+/* Noise texture overlay */
+.noise-overlay {
+  position: absolute;
+  inset: 0;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+  mix-blend-mode: overlay;
+}
+
+/* ========================================
+   Floating Glass Orbs
+   ======================================== */
+.orbs-container {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.glass-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(var(--orb-blur, 60px));
+  opacity: var(--orb-opacity, 0.05);
+  animation: orbFloat var(--orb-duration, 20s) var(--orb-delay, 0s) ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+@keyframes orbFloat {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  25% {
+    transform: translate(var(--orb-dx1, 30px), var(--orb-dy1, -40px)) scale(1.05);
+  }
+  50% {
+    transform: translate(var(--orb-dx2, -20px), var(--orb-dy2, 20px)) scale(0.95);
+  }
+  75% {
+    transform: translate(var(--orb-dx3, 15px), var(--orb-dy3, 30px)) scale(1.02);
+  }
+  100% {
+    transform: translate(var(--orb-dx4, -25px), var(--orb-dy4, -15px)) scale(0.98);
+  }
+}
+
+/* ========================================
    Glass Card — Core Component
    ======================================== */
 .glass-card {
   background: var(--glass);
-  backdrop-filter: blur(40px);
-  -webkit-backdrop-filter: blur(40px);
+  backdrop-filter: blur(40px) saturate(120%);
+  -webkit-backdrop-filter: blur(40px) saturate(120%);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius);
   box-shadow: var(--shadow-card);
   padding: 32px;
   transition: all 0.4s var(--ease);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Inner top-edge highlight */
+.glass-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.1) 30%, rgba(255, 255, 255, 0.1) 70%, transparent 100%);
+  pointer-events: none;
+}
+
+/* Hover shine effect */
+.glass-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0) 40%,
+    rgba(255, 255, 255, 0.03) 50%,
+    rgba(255, 255, 255, 0) 60%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-size: 300% 300%;
+  background-position: 100% 100%;
+  transition: background-position 0.6s var(--ease);
+  pointer-events: none;
+  opacity: 0;
 }
 
 .glass-card:hover {
   background: var(--glass-hover);
-  box-shadow: var(--shadow-card-hover);
+  box-shadow:
+    var(--shadow-card-hover),
+    inset 0 0 40px rgba(255, 255, 255, 0.01);
   transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.glass-card:hover::after {
+  opacity: 1;
+  background-position: 0% 0%;
 }
 
 /* ========================================
@@ -196,18 +321,43 @@ ul { list-style: none; }
   padding: 140px 0 100px;
   position: relative;
   overflow: hidden;
+  z-index: 1;
 }
 
-.hero::before {
-  content: '';
+/* Primary glow — blue, center-left */
+.hero-glow--primary {
   position: absolute;
-  top: -20%;
-  left: 50%;
+  top: -10%;
+  left: 40%;
   transform: translateX(-50%);
+  width: 1000px;
+  height: 700px;
+  background: radial-gradient(ellipse, rgba(41, 151, 255, 0.08) 0%, transparent 65%);
+  pointer-events: none;
+  animation: heroGlowPulse 8s ease-in-out infinite alternate;
+}
+
+/* Secondary glow — purple/teal, offset right */
+.hero-glow--secondary {
+  position: absolute;
+  top: 5%;
+  left: 65%;
   width: 800px;
   height: 600px;
-  background: radial-gradient(ellipse, rgba(41, 151, 255, 0.06) 0%, transparent 70%);
+  background: radial-gradient(ellipse, rgba(168, 85, 247, 0.05) 0%, rgba(48, 213, 200, 0.03) 40%, transparent 70%);
   pointer-events: none;
+  animation: heroGlowPulse2 10s ease-in-out infinite alternate;
+}
+
+@keyframes heroGlowPulse {
+  0% { opacity: 0.8; transform: translateX(-50%) scale(1); }
+  100% { opacity: 1; transform: translateX(-50%) scale(1.08); }
+}
+
+@keyframes heroGlowPulse2 {
+  0% { opacity: 0.7; transform: scale(1) translate(0, 0); }
+  50% { opacity: 1; transform: scale(1.05) translate(-2%, 3%); }
+  100% { opacity: 0.8; transform: scale(0.97) translate(2%, -1%); }
 }
 
 .hero-badge {
@@ -230,9 +380,21 @@ ul { list-style: none; }
   letter-spacing: -0.04em;
   margin-bottom: 24px;
   background: linear-gradient(180deg, #ffffff 30%, #a1a1a6 100%);
+  background-size: 100% 100%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  position: relative;
+  animation: nameShimmer 6s ease-in-out infinite;
+}
+
+@keyframes nameShimmer {
+  0%, 100% {
+    background-image: linear-gradient(180deg, #ffffff 30%, #a1a1a6 100%);
+  }
+  50% {
+    background-image: linear-gradient(180deg, #ffffff 20%, #c8c8cc 60%, #a1a1a6 100%);
+  }
 }
 
 .hero-tagline {
@@ -286,6 +448,18 @@ ul { list-style: none; }
   font-size: 0.875rem;
   color: var(--text-secondary);
   font-weight: 500;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-link::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
 }
 
 .hero-link:hover {
@@ -307,10 +481,30 @@ ul { list-style: none; }
 .hero-link-icon svg { width: 16px; height: 16px; }
 
 /* ========================================
+   Section Dividers
+   ======================================== */
+.section-divider {
+  height: 1px;
+  position: relative;
+  z-index: 1;
+}
+
+.section-divider::before {
+  content: '';
+  display: block;
+  height: 80px;
+  margin-top: -40px;
+  background: linear-gradient(180deg, transparent 0%, rgba(255, 255, 255, 0.02) 50%, transparent 100%);
+  pointer-events: none;
+}
+
+/* ========================================
    Sections
    ======================================== */
 .section {
   padding: 120px 0;
+  position: relative;
+  z-index: 1;
 }
 
 .section-alt {
@@ -460,6 +654,18 @@ ul { list-style: none; }
   -webkit-backdrop-filter: blur(20px);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.cert-pill::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.06), transparent);
 }
 
 .cert-pill:hover {
@@ -609,6 +815,8 @@ ul { list-style: none; }
 .footer {
   padding: 60px 0 40px;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
+  position: relative;
+  z-index: 1;
 }
 
 .footer-top {
@@ -706,6 +914,8 @@ ul { list-style: none; }
 
   .hero { padding: 120px 0 80px; min-height: auto; }
   .hero-name { font-size: clamp(2.5rem, 12vw, 4rem); }
+  .hero-glow--primary { width: 600px; height: 400px; }
+  .hero-glow--secondary { width: 400px; height: 300px; }
 
   .section { padding: 80px 0; }
   .section-title { margin-bottom: 36px; }
@@ -721,4 +931,6 @@ ul { list-style: none; }
 
   .footer-top { flex-direction: column; gap: 24px; }
   .footer-bottom { flex-direction: column; gap: 8px; align-items: flex-start; }
+
+  /* Smaller/fewer orbs on mobile handled by JS */
 }
