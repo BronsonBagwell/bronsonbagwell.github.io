@@ -56,11 +56,11 @@ const experience = [
 
 const projects = [
   {
-    title: 'World Happiness Analysis',
-    href: 'https://github.com/BronsonBagwell/World_Happiness',
+    title: 'Meridian MMM Portfolio',
+    href: 'https://github.com/BronsonBagwell/Meridian_MMM',
     description:
-      'Exploratory analysis and predictive modeling on UN happiness data with a Random Forest model reaching R² = 0.725.',
-    tags: ['Python', 'pandas', 'scikit-learn'],
+      'Marketing mix modeling portfolio project combining a fast deterministic MMM pipeline with a runnable Google Meridian integration for attribution, ROI, and budget-allocation storytelling.',
+    tags: ['Python', 'MMM', 'Google Meridian'],
   },
   {
     title: 'Classification Model',
@@ -255,7 +255,7 @@ export default function Home() {
           id="projects"
           eyebrow="Selected Projects"
           title="Selected projects"
-          description="Portfolio work covering predictive modeling, clustering, regression, and structured analysis."
+          description="Portfolio work covering marketing mix modeling, predictive modeling, clustering, regression, and structured analysis."
         >
           <div className="grid gap-6 md:grid-cols-2">
             {projects.map((project) => (
