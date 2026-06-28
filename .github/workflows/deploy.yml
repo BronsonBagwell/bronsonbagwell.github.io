@@ -24,8 +24,12 @@ jobs:
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5
-        with:
-          static_site_generator: next
+        # NOTE: intentionally NOT setting `static_site_generator: next`.
+        # That option makes configure-pages rewrite next.config.mjs to inject
+        # the base path, which mangles the file on Node 24 runners. We instead
+        # pass the base path to the build via NEXT_PUBLIC_PAGES_BASE_PATH below,
+        # and next.config.mjs reads it from the environment. configure-pages
+        # still emits steps.pages.outputs.base_path without this option.
 
       - name: Setup Node
         uses: actions/setup-node@v4
