@@ -117,6 +117,27 @@ export const projects: Project[] = [
     tags: ["R", "Clustering", "Unsupervised"],
     github: "https://github.com/BronsonBagwell/Cluster_Analysis",
   },
+  {
+    title: "Simple Linear Regression",
+    desc:
+      "A hotel-siting case study: multiple regression on location and competition factors, with a 95% prediction interval turned into a build/don't-build recommendation.",
+    tags: ["R", "Regression", "Prediction Intervals"],
+    github: "https://github.com/BronsonBagwell/Simple_Linear_Regression",
+  },
+  {
+    title: "Tree-Based Models",
+    desc:
+      "Conditional inference trees, random forest, and bagging on graduate-admission data — interpretable decision rules compared against ensemble accuracy.",
+    tags: ["R", "Random Forest", "Decision Trees"],
+    github: "https://github.com/BronsonBagwell/Tree_Based_Models",
+  },
+  {
+    title: "Student Test Scores EDA",
+    desc:
+      "Visualization-first exploratory analysis of 1,000 students' exam scores across demographics, with ordinal-aware correlation analysis.",
+    tags: ["R", "EDA", "ggplot2"],
+    github: "https://github.com/BronsonBagwell/Student_Test_Scores",
+  },
 ];
 
 export const education: School[] = [
