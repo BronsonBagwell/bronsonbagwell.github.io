@@ -118,6 +118,13 @@ export const projects: Project[] = [
     github: "https://github.com/BronsonBagwell/Cluster_Analysis",
   },
   {
+    title: "Classification Model",
+    desc:
+      "Binary logistic regression predicting graduate admission, evaluated with confusion-matrix metrics, ROC, and AUC — the best test error of every model built on this dataset.",
+    tags: ["R", "Logistic Regression", "Classification"],
+    github: "https://github.com/BronsonBagwell/Classification_Model",
+  },
+  {
     title: "Simple Linear Regression",
     desc:
       "A hotel-siting case study: multiple regression on location and competition factors, with a 95% prediction interval turned into a build/don't-build recommendation.",
