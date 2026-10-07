@@ -77,7 +77,7 @@ export const projects: Project[] = [
   {
     title: "Meridian MMM",
     desc:
-      "A portfolio-ready marketing mix model with a fast, deterministic ROI pipeline plus a runnable Google Meridian validation and stakeholder-ready reporting output.",
+      "Marketing mix modeling on simulated data with a known answer — a fast regression baseline and a Google Meridian Bayesian model, each graded against the true channel ROI.",
     tags: ["Python", "Marketing Mix Modeling", "Google Meridian"],
     github: "https://github.com/BronsonBagwell/Meridian_MMM",
     featured: true,
@@ -85,7 +85,7 @@ export const projects: Project[] = [
   {
     title: "Monte Carlo Simulation",
     desc:
-      "Monte Carlo simulation for inventory optimization and pricing strategy — modeling demand uncertainty to find better stocking and price decisions.",
+      "Monte Carlo simulation for inventory optimization — modeling demand uncertainty to find the most profitable stocking level.",
     tags: ["R", "Simulation", "Optimization"],
     github: "https://github.com/BronsonBagwell/Simulation",
   },
@@ -104,9 +104,9 @@ export const projects: Project[] = [
     github: "https://github.com/BronsonBagwell/World_Happiness",
   },
   {
-    title: "Neural Net vs. Random Forest",
+    title: "Neural Network",
     desc:
-      "A head-to-head comparison of a neural network and a random forest for predicting graduate-admission outcomes.",
+      "Single-hidden-layer neural networks (one to three neurons) predicting graduate-admission outcomes, compared against the logistic and tree-based models on the same test set.",
     tags: ["R", "Neural Networks", "Classification"],
     github: "https://github.com/BronsonBagwell/Neural_Network",
   },
@@ -120,7 +120,7 @@ export const projects: Project[] = [
   {
     title: "Classification Model",
     desc:
-      "Binary logistic regression predicting graduate admission, evaluated with confusion-matrix metrics, ROC, and AUC — the best test error of every model built on this dataset.",
+      "Binary logistic regression predicting graduate admission, evaluated with confusion-matrix metrics, ROC, and AUC — the lowest test error (11.25%) of the models compared on this dataset.",
     tags: ["R", "Logistic Regression", "Classification"],
     github: "https://github.com/BronsonBagwell/Classification_Model",
   },
